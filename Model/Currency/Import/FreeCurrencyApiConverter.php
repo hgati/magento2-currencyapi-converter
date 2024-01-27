@@ -12,7 +12,8 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
 //use Magento\Framework\HTTP\ZendClient;
 //use Magento\Framework\HTTP\ZendClientFactory;
-use Laminas\Http\Client;
+use Laminas\Http\Client as HttpClient;;
+use Laminas\Uri\Http as HttpUri;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Exception;
 
@@ -60,13 +61,13 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
     /**
      * @param CurrencyFactory $currencyFactory
      * @param ScopeConfig $scopeConfig
-     * @param Client $httpClient
+     * @param HttpClient $httpClient
      * @param EncryptorInterface $encryptor
      */
     public function __construct(
         CurrencyFactory $currencyFactory,
         ScopeConfig $scopeConfig,
-        Client $httpClient,
+        HttpClient $httpClient,
         EncryptorInterface $encryptor
     ) {
         parent::__construct($currencyFactory);
@@ -198,14 +199,13 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
      */
     private function getServiceResponse($url, $retry = 0): array
     {
-        /** @var ZendClient $httpClient */
-        $httpClient = $this->httpClient->create();
         $response = [];
 
         try {
-            $jsonResponse = $httpClient->setUri(
-                $url
-            )->setOptions(
+            $uri = new HttpUri($url);
+            $response = $this->httpClient->setUri(
+                $uri
+            )->setMethod('GET')->setOptions(
                 [
                     'timeout' => $this->scopeConfig->getValue(
                         'currency/currencyapi/timeout',
@@ -213,7 +213,7 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
                     ),
                 ]
             )->send();
-
+            $jsonResponse = $response->getBody();
             $response = json_decode($jsonResponse, true) ?: [];
         } catch (Exception $e) {
             if ($retry == 0) {
