@@ -1,6 +1,6 @@
-# Mage2 Module MageRahul CurrencyConverter
+# Mage2 Module Hgati CurrencyConverter
 
-    ``composer require magerahul/module-currencyconverter``
+    ``composer require hgati/module-currencyapi-converter``
 
  - [Main Functionalities](#user-content-main-functionalities)
  - [Installation](#user-content-installation)
@@ -10,15 +10,15 @@
 
 
 ## Main Functionalities
-This is magento 2 module which provides integration of free currency converter(freecurrencyapi.net) API.
+This is magento 2 module which provides integration of free currency converter(currencyapi.net) API.
 
 ## Installation
 \* = in production please use the `--keep-generated` option
 
 ### Type 1: Zip file
 
- - Unzip the zip file in `app/code/MageRahul`
- - Enable the module by running `php bin/magento module:enable MageRahul_CurrencyConverter`
+ - Unzip the zip file in `app/code/Hgati`
+ - Enable the module by running `php bin/magento module:enable Hgati_CurrencyApiConverter`
  - Apply database updates by running `php bin/magento setup:upgrade`\*
  - Flush the cache by running `php bin/magento cache:flush`
 
@@ -29,17 +29,17 @@ This is magento 2 module which provides integration of free currency converter(f
     - public repository `packagist.org`
     - public github repository as vcs
  - Add the composer repository to the configuration by running `composer config repositories.repo.magento.com composer https://repo.magento.com/`
- - Install the module composer by running `composer require magerahul/module-currencyconverter`
- - enable the module by running `php bin/magento module:enable MageRahul_CurrencyConverter`
+ - Install the module composer by running `composer require hgati/module-currencyapi-converter`
+ - enable the module by running `php bin/magento module:enable Hgati_CurrencyApiConverter`
  - apply database updates by running `php bin/magento setup:upgrade`\*
  - Flush the cache by running `php bin/magento cache:flush`
 
 
 ## Configuration
 
- - API Key (currency/freecurrencyapi/api_key)
+ - API Key (currency/currencyapi/api_key)
 
- - Connection Timeout in Seconds (currency/freecurrencyapi/timeout)
+ - Connection Timeout in Seconds (currency/currencyapi/timeout)
 
 
 ## Specifications

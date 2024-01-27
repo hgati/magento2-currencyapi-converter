@@ -1,11 +1,11 @@
 <?php
 /**
- * Copyright © Rahul Barot All rights reserved.
+ * Copyright © Dennis Lee All rights reserved.
  * See COPYING.txt for license details.
  */
 declare(strict_types=1);
 
-namespace MageRahul\CurrencyConverter\Model\Currency\Import;
+namespace Hgati\CurrencyConverter\Model\Currency\Import;
 
 use Magento\Directory\Model\CurrencyFactory;
 use Magento\Store\Model\ScopeInterface;
@@ -16,14 +16,14 @@ use Magento\Framework\Encryption\EncryptorInterface;
 use Exception;
 
 /**
- * freecurrencyapi converter (freecurrencyapi.net).
+ * currencyapi converter (currencyapi.net).
  */
-class FreecurrencyConverterApi extends \Magento\Directory\Model\Currency\Import\AbstractImport
+class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\AbstractImport
 {
     /**
      * @var string
      */
-    public const CURRENCY_CONVERTER_URL = 'https://freecurrencyapi.net/api/v2/latest?apikey={{ACCESS_KEY}}&base_currency={{BASE_CURRENCY}}';
+    public const CURRENCY_CONVERTER_URL = 'https://currencyapi.com/api/v2/latest?apikey={{ACCESS_KEY}}&base_currency={{BASE_CURRENCY}}';
 
     /**
      * Http Client Factory
@@ -171,7 +171,7 @@ class FreecurrencyConverterApi extends \Magento\Directory\Model\Currency\Import\
         if (!$this->serviceUrl) {
             // Get access key
             $accessKey = $this->scopeConfig
-                ->getValue('currency/freecurrencyapi/api_key', ScopeInterface::SCOPE_STORE);    
+                ->getValue('currency/currencyapi/api_key', ScopeInterface::SCOPE_STORE);    
             $accessKey = $this->encryptor->decrypt($accessKey);
             
             if (empty($accessKey)) {
@@ -189,7 +189,7 @@ class FreecurrencyConverterApi extends \Magento\Directory\Model\Currency\Import\
     }
 
     /**
-     * Get freecurrencyapi.net service response
+     * Get currencyapi.net service response
      *
      * @param string $url
      * @param int $retry
@@ -207,7 +207,7 @@ class FreecurrencyConverterApi extends \Magento\Directory\Model\Currency\Import\
             )->setConfig(
                 [
                     'timeout' => $this->scopeConfig->getValue(
-                        'currency/freecurrencyapi/timeout',
+                        'currency/currencyapi/timeout',
                         ScopeInterface::SCOPE_STORE
                     ),
                 ]
