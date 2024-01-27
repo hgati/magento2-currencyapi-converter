@@ -10,8 +10,9 @@ namespace Hgati\CurrencyConverter\Model\Currency\Import;
 use Magento\Directory\Model\CurrencyFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory;
+//use Magento\Framework\HTTP\ZendClient;
+//use Magento\Framework\HTTP\ZendClientFactory;
+use Laminas\Http\Client;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Exception;
 
@@ -26,11 +27,11 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
     public const CURRENCY_CONVERTER_URL = 'https://currencyapi.com/api/v2/latest?apikey={{ACCESS_KEY}}&base_currency={{BASE_CURRENCY}}';
 
     /**
-     * Http Client Factory
+     * Http Client
      *
-     * @var ZendClientFactory
+     * @var Client
      */
-    private $httpClientFactory;
+    private $httpClient;
 
     /**
      * Core scope config
@@ -59,18 +60,18 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
     /**
      * @param CurrencyFactory $currencyFactory
      * @param ScopeConfig $scopeConfig
-     * @param ZendClientFactory $httpClientFactory
+     * @param Client $httpClient
      * @param EncryptorInterface $encryptor
      */
     public function __construct(
         CurrencyFactory $currencyFactory,
         ScopeConfig $scopeConfig,
-        ZendClientFactory $httpClientFactory,
+        Client $httpClient,
         EncryptorInterface $encryptor
     ) {
         parent::__construct($currencyFactory);
         $this->scopeConfig = $scopeConfig;
-        $this->httpClientFactory = $httpClientFactory;
+        $this->httpClient = $httpClient;
         $this->encryptor = $encryptor;
     }
 
@@ -198,22 +199,20 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
     private function getServiceResponse($url, $retry = 0): array
     {
         /** @var ZendClient $httpClient */
-        $httpClient = $this->httpClientFactory->create();
+        $httpClient = $this->httpClient->create();
         $response = [];
 
         try {
             $jsonResponse = $httpClient->setUri(
                 $url
-            )->setConfig(
+            )->setOptions(
                 [
                     'timeout' => $this->scopeConfig->getValue(
                         'currency/currencyapi/timeout',
                         ScopeInterface::SCOPE_STORE
                     ),
                 ]
-            )->request(
-                'GET'
-            )->getBody();
+            )->send();
 
             $response = json_decode($jsonResponse, true) ?: [];
         } catch (Exception $e) {
