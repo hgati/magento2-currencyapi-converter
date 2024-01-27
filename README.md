@@ -1,4 +1,4 @@
-# Mage2 Module Hgati CurrencyConverter
+# Mage2 Module Hgati CurrencyConverter (for Magento v2.4.6)
 
     ``composer require hgati/module-currencyapi-converter``
 
