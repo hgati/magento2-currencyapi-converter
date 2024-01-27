@@ -4,7 +4,7 @@
 		<currency>
 			<currencyapi>
 				<api_key/>
-				<timeout/>
+				<timeout>100</timeout>
 			</currencyapi>
 		</currency>
 	</default>
