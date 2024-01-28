@@ -10,15 +10,13 @@ namespace Hgati\CurrencyConverter\Model\Currency\Import;
 use Magento\Directory\Model\CurrencyFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface as ScopeConfig;
-//use Magento\Framework\HTTP\ZendClient;
-//use Magento\Framework\HTTP\ZendClientFactory;
 use Laminas\Http\Client as HttpClient;;
 use Laminas\Uri\Http as HttpUri;
 use Magento\Framework\Encryption\EncryptorInterface;
 use Exception;
 
 /**
- * currencyapi converter (currencyapi.net).
+ * currencyapi converter (currencyapi.com).
  */
 class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\AbstractImport
 {
@@ -125,7 +123,11 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
         }
 
         $response = $response['data'];
-
+        // $response = [ 
+        //     'AUD' => ['code' => 'AUD', 'value' => 2.0528424423 ],
+        //     'KRW' => ['code' => 'KRW', 'value' => 1324.0528424423 ],
+        //     ...
+        // ];
         foreach ($currenciesTo as $to) {
             if ($currencyFrom === $to) {
                 $data[$currencyFrom][$to] = $this->_numberFormat(1);
@@ -136,7 +138,7 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
                     $data[$currencyFrom][$to] = null;
                 } else {
                     $data[$currencyFrom][$to] = $this->_numberFormat(
-                        (double)$response[$to]
+                        (double)$response[$to]['value']
                     );
                 }
             }
