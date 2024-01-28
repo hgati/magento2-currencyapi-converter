@@ -25,7 +25,7 @@ class FreeCurrencyApiConverter extends \Magento\Directory\Model\Currency\Import\
     /**
      * @var string
      */
-    public const CURRENCY_CONVERTER_URL = 'https://currencyapi.com/api/v2/latest?apikey={{ACCESS_KEY}}&base_currency={{BASE_CURRENCY}}';
+    public const CURRENCY_CONVERTER_URL = 'https://api.currencyapi.com/v3/latest?apikey={{ACCESS_KEY}}&base_currency={{BASE_CURRENCY}}';
 
     /**
      * Http Client
